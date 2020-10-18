@@ -9,7 +9,14 @@ from django.views.generic import (
 )
 from .models import Post
 
+from matplotlib import pyplot as plt
+import io 
+import urllib, base64 
 
+#To ponizej w ogole nic nie robi bo MODELS to nadpisuje,
+#albo prowadzi w ogole do nie uzycia.
+#Obkomentowalem i nie bylo widac roznicy. Mozna usunac kiedys chyba,
+#ale sie musze upewnic.
 def home(request):
     context = {
         'posts': Post.objects.all()
@@ -17,6 +24,7 @@ def home(request):
     return render(request, 'blog/home.html', context)
 
 
+#to chyba to wyzej nadpisuje w dzialaniu appki
 class PostListView(ListView):
     model = Post
     template_name = 'blog/home.html'  # <app>/<model>_<viewtype>.html
@@ -64,4 +72,26 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 def about(request):
-    return render(request, 'blog/about.html', {'title': 'About'})
+    chart = MakeChart(10)
+    context = {
+         'charts': chart
+      }
+    
+    return render(request, 'blog/about.html', context
+        #, {'title': 'About'}
+        )
+
+#ta metoda dziala i poprawnie rzuca do about chart z pyplot
+def MakeChart(size):
+    plt.plot(range(size))
+    fig = plt.gcf()
+    #convert graph into dtring buffer and then we convert 64 bit code into image
+    buf = io.BytesIO()
+    fig.savefig(buf,format='png')
+    buf.seek(0)
+    string = base64.b64encode(buf.read())
+    uri =  urllib.parse.quote(string)
+    
+    return uri
+
+
