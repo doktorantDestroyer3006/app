@@ -8,6 +8,7 @@ from django.views.generic import (
     DeleteView
 )
 from .models import Post
+from .models import MyModel
 
 from matplotlib import pyplot as plt
 import io 
@@ -19,17 +20,24 @@ import urllib, base64
 #ale sie musze upewnic.
 def home(request):
     context = {
-        'posts': Post.objects.all()
+        'posts': Post.objects.all(),
+        'charts': MyModel.objects.all()
     }
     return render(request, 'blog/home.html', context)
 
 
 #to chyba to wyzej nadpisuje w dzialaniu appki
+# class PostListView(ListView):
+#     model = Post
+#     template_name = 'blog/home.html'  # <app>/<model>_<viewtype>.html
+#     context_object_name = 'posts'
+#     ordering = ['-date_posted']
+
 class PostListView(ListView):
-    model = Post
+    model = MyModel
     template_name = 'blog/home.html'  # <app>/<model>_<viewtype>.html
-    context_object_name = 'posts'
-    ordering = ['-date_posted']
+    context_object_name = 'charts'
+    #ordering = ['-date_posted']
 
 
 class PostDetailView(DetailView):
@@ -93,5 +101,3 @@ def MakeChart(size):
     uri =  urllib.parse.quote(string)
     
     return uri
-
-

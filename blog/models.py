@@ -4,8 +4,12 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 from matplotlib import pyplot as plt
+from django_matplotlib import MatplotlibFigureField
 import io 
-import urllib, base64 
+import urllib, base64
+
+class MyModel(models.Model):
+    figure = MatplotlibFigureField(figure='my_figure') 
 
 def MakeChart2(size):
         plt.plot(range(size))
