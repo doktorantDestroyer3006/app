@@ -1,0 +1,16 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    {% for trip in trips %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ trip.author }}</a>
+              <small class="text-muted">{{ trip.date_posted|date:"F d, Y" }}</small>
+            </div>
+            <h2><a class="article-title" href="{% url 'trip-detail' trip.id %}">{{ trip.compound  }}</a></h2>
+            <p class="article-content">{{ trip.dose }}</p>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

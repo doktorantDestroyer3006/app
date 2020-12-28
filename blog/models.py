@@ -7,9 +7,26 @@ from matplotlib import pyplot as plt
 from django_matplotlib import MatplotlibFigureField
 import io 
 import urllib, base64
+from . import figures
 
 class MyModel(models.Model):
-    figure = MatplotlibFigureField(figure='my_figure') 
+    print('666')
+    figure = MatplotlibFigureField(figure='my_figure')
+    fig1 = models.TextField(default = "DUPA")
+    #fig2 = models.TextField(default ='my_figure2')
+    #fig2 = models.TextField(default ='my_figure2')
+    fig2 = figures.my_figure2()
+    #print(figure)
+    #figure = models.TextField(figure='my_figure')
+    # figure2 = 'xx'
+    # print(figure)
+
+    # def __init__():
+    #     print('xxxx')
+
+    # def _str_(self):
+    #     print('xd')
+
 
 def MakeChart2(size):
         plt.plot(range(size))
@@ -20,7 +37,7 @@ def MakeChart2(size):
         buf.seek(0)
         string = base64.b64encode(buf.read())
         uri =  urllib.parse.quote(string)
-        
+        # print(uri)
         return uri
 
 def MakeChart3(size):
@@ -29,7 +46,7 @@ def MakeChart3(size):
         #convert graph into dtring buffer and then we convert 64 bit code into image
         buf = io.BytesIO()
         fig.savefig(buf,format='png')
-        
+        #print(buf)
         return buf
 
 
@@ -52,10 +69,3 @@ class Post(models.Model):
         return reverse('post-detail', kwargs={'pk': self.pk})
 
     
-
-# class Trip(Post):
-# 	title = models.CharField(max_length=100)
-# 	content= models.TextField()
-# 	date_posted = models.DateTimeField(default=timezone.now)
-# 	substance = models.CharField(max_length=100)
-# 	chart = models.TextField

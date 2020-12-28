@@ -23,6 +23,9 @@ def home(request):
         'posts': Post.objects.all(),
         'charts': MyModel.objects.all()
     }
+    print('lol1')
+    context['charts']._str_()
+    print('lol2')
     return render(request, 'blog/home.html', context)
 
 
